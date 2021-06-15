@@ -43,6 +43,6 @@ class Products_provider with ChangeNotifier{
     }
 
     void addProduct(){
-      addListener(() { });
+      notifyListeners();
     }
 }

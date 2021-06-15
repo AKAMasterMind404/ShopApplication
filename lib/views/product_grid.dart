@@ -4,12 +4,6 @@ import 'package:state_management/models/product_item.dart';
 import 'package:provider/provider.dart';
 
 class ProductsGrid extends StatelessWidget {
-  // final List<Product> products;
-  //
-  // const ProductsGrid({
-  //   Key key,
-  //   @required this.products
-  // }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +20,9 @@ class ProductsGrid extends StatelessWidget {
           childAspectRatio: 3 / 2,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10),
-      itemBuilder: (cntx, i) => ProductItem(
-        id: products[i].id,
-        title: products[i].title,
-        imageUrl: products[i].imageUrl,
+      itemBuilder: (cntx, i) => ChangeNotifierProvider(
+        create: (context)=> products[i],
+        child: ProductItem(),
       ),
     );
   }
