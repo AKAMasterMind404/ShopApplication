@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:state_management/views/product_detail.dart';
 
 class ProductItem extends StatelessWidget {
   String id;

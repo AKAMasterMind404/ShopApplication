@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:state_management/controller/products_provider.dart';
-import 'package:state_management/models/product.dart';
 import 'package:state_management/models/product_item.dart';
 import 'package:provider/provider.dart';
 
