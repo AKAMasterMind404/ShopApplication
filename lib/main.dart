@@ -6,6 +6,9 @@ import 'package:provider/provider.dart';
 
 void main()=>runApp(
     ChangeNotifierProvider(
+
+      // Every widget that listens to this provider will receive
+      // an object of the Products_provider class
       create: (context)=>Products_provider(),
       child: MaterialApp(
         theme: ThemeData(
