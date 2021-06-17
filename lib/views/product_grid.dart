@@ -12,7 +12,7 @@ class ProductsGrid extends StatelessWidget {
   // This widget Products Grid is listening to the change notifier class
   final productsData = Provider.of<Products_provider>(context);
   final products = showFav?productsData.favoriteItems:productsData.items;
-  print(showFav);
+  // print(showFav);
   return GridView.builder(
       padding: const EdgeInsets.all(10),
       itemCount: products.length,

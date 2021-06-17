@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:state_management/controller/products_provider.dart';
+import 'package:state_management/controller/cart.dart';
+import 'package:state_management/models/badge.dart';
 import 'package:state_management/views/product_grid.dart';
 
 enum FilterOptions { FAVORITES, ALL }
 
 class home extends StatefulWidget {
-
   @override
   _homeState createState() => _homeState();
 }
@@ -16,6 +16,7 @@ class _homeState extends State<home> {
 
   @override
   Widget build(BuildContext context) {
+    // int l = Provider.of<Cart>(context).cartItems.length;
     return SafeArea(
         child: Scaffold(
             appBar: AppBar(
@@ -25,10 +26,9 @@ class _homeState extends State<home> {
                   icon: const Icon(Icons.more_vert),
                   onSelected: (FilterOptions f) {
                     setState(() {
-                      if(f == FilterOptions.FAVORITES){
+                      if (f == FilterOptions.FAVORITES) {
                         _showOnlyFavorites = true;
-                      }
-                      else{
+                      } else {
                         _showOnlyFavorites = false;
                       }
                     });
@@ -41,11 +41,18 @@ class _homeState extends State<home> {
                         child: const Text("Show All"),
                         value: FilterOptions.ALL),
                   ],
+                ),
+                Consumer<Cart>(
+                  builder:(c,cartObj,iconButton)=> Badge(
+                      child: iconButton,
+                      value: cartObj.cartItems.length.toString()),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.shopping_cart),
+                  ),
                 )
               ],
             ),
-            body: ProductsGrid(_showOnlyFavorites)
-        )
-    );
+            body: ProductsGrid(_showOnlyFavorites)));
   }
 }
