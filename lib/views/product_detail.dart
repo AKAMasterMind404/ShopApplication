@@ -17,9 +17,33 @@ class ProductDetail extends StatelessWidget {
         // condition is met
         .firstWhere((element) => element.id == pid);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(productItemWithPid.title),
-      ),
-    );
+        appBar: AppBar(
+          title: Text(productItemWithPid.title),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(8, 0, 8, 8),
+                height: 300,
+                width: double.infinity,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(12),bottomRight: Radius.circular(12)),
+                   child: Image.network(productItemWithPid.imageUrl,
+                      fit: BoxFit.cover),
+                ),
+              ),
+              SizedBox(height: 10),
+              Text("${productItemWithPid.price}",
+                  style: TextStyle(color: Colors.grey, fontSize: 20)),
+              SizedBox(height: 10),
+              Center(
+                child: Text("${productItemWithPid.description}",
+                    style: TextStyle(fontSize: 20),
+                    softWrap: true),
+              )
+            ],
+          ),
+        ));
   }
 }

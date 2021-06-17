@@ -13,6 +13,7 @@ class ProductItem extends StatelessWidget {
     String title = p.title;
     String imageUrl = p.imageUrl;
     bool isFav = p.isFavorite;
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
       child: GridTile(

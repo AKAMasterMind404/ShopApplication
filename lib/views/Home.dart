@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:state_management/controller/cart.dart';
 import 'package:state_management/models/badge.dart';
+import 'package:state_management/views/app_drawer.dart';
 import 'package:state_management/views/product_grid.dart';
 
 enum FilterOptions { FAVORITES, ALL }
@@ -47,12 +48,17 @@ class _homeState extends State<home> {
                       child: iconButton,
                       value: cartObj.cartItems.length.toString()),
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context,"cartScreen");
+                    },
                     icon: Icon(Icons.shopping_cart),
                   ),
                 )
               ],
             ),
-            body: ProductsGrid(_showOnlyFavorites)));
+            body: ProductsGrid(_showOnlyFavorites),
+            drawer: AppDrawer(),
+        )
+    );
   }
 }
