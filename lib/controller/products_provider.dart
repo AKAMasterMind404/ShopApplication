@@ -42,6 +42,22 @@ class Products_provider with ChangeNotifier{
       return [..._items];
     }
 
+    List <Product> get favoriteItems{
+      return _items.where((element) => element.isFavorite).toList();
+    }
+
+    // bool showFavorites = false;
+    //
+    // void favOnly(){
+    //   showFavorites = true;
+    //   notifyListeners();
+    // }
+    //
+    // void showAll(){
+    //   showFavorites = false;
+    //   notifyListeners();
+    // }
+
     void addProduct(){
       addListener(() { });
     }

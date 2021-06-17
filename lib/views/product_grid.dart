@@ -4,21 +4,16 @@ import 'package:state_management/models/product_item.dart';
 import 'package:provider/provider.dart';
 
 class ProductsGrid extends StatelessWidget {
-  // final List<Product> products;
-  //
-  // const ProductsGrid({
-  //   Key key,
-  //   @required this.products
-  // }) : super(key: key);
-
+  bool showFav;
+  ProductsGrid(this.showFav);
   @override
   Widget build(BuildContext context) {
 
   // This widget Products Grid is listening to the change notifier class
   final productsData = Provider.of<Products_provider>(context);
-  final products = productsData.items;
-
-    return GridView.builder(
+  final products = showFav?productsData.favoriteItems:productsData.items;
+  print(showFav);
+  return GridView.builder(
       padding: const EdgeInsets.all(10),
       itemCount: products.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -26,8 +21,8 @@ class ProductsGrid extends StatelessWidget {
           childAspectRatio: 3 / 2,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10),
-      itemBuilder: (cntx, i) => ChangeNotifierProvider(
-        create: (c)=>products[i],
+      itemBuilder: (cntx, i) => ChangeNotifierProvider.value(
+        value: products[i],
         child: ProductItem(),
       ),
     );
