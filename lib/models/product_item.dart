@@ -11,6 +11,7 @@ class ProductItem extends StatelessWidget{
     String id = p.id;
     String title = p.title;
     String imageUrl = p.imageUrl;
+    bool isFav = p.isFavorite;
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
@@ -31,8 +32,12 @@ class ProductItem extends StatelessWidget{
           backgroundColor: Colors.black87,
           title: Text(title, textAlign: TextAlign.center),
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              p.toggleFavoriteStatus();
+            },
             icon: Icon(
+                isFav?
+                Icons.favorite_rounded:
                 Icons.favorite_border_rounded,
                 color: Theme
                     .of(context)
