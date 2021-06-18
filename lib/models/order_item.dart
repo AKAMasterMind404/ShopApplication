@@ -38,7 +38,7 @@ class _OrderItemSingleState extends State<OrderItemSingle> {
               ? Container(
                   padding: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
                   height: min(
-                      (widget.order.products.length * 20 + 10).toDouble(),
+                      (widget.order.products.length * 20 + 100).toDouble(),
                       180),
                   child: ListView.builder(
                     itemCount: widget.order.products.length,
