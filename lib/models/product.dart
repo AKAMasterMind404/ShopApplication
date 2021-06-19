@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
 class Product with ChangeNotifier{
-  final String id;
-  final String title;
-  final String description;
-  final double price;
-  final String imageUrl;
+  String id;
+  String title;
+  String description;
+  double price;
+  String imageUrl;
   bool isFavorite;
 
   Product(
