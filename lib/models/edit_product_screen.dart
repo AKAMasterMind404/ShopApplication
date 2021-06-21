@@ -80,14 +80,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
-  void _saveForm() {
+  void _saveForm()async{
     final isValid = _form.currentState.validate();
     if (!isValid) {
       return;
     }
     _form.currentState.save();
     if (_editedProduct.id != null) {
-      Provider.of<Products_provider>(context, listen: false)
+      await Provider.of<Products_provider>(context, listen: false)
           .updateProduct(_editedProduct.id, _editedProduct);
     } else {
       Provider.of<Products_provider>(context, listen: false)

@@ -15,12 +15,19 @@ class home extends StatefulWidget {
 
 class _homeState extends State<home> {
   bool _showOnlyFavorites = false;
+  bool _isLoading = false;
+
+  Future<void> loadData() async {
+    await Provider.of<Products_provider>(context,listen: false).fetchAndSetProducts();
+  }
 
   @override
   void initState() {
-    Future.delayed(Duration.zero).then((value) {
-      Provider.of<Products_provider>(context, listen: false).fetchAndSetProducts();
-    });
+    // _isLoading = true;
+    // setState(() {
+    //   _isLoading = false;
+    // });
+    loadData();
     super.initState();
   }
 
@@ -63,7 +70,9 @@ class _homeState extends State<home> {
           )
         ],
       ),
-      body: ProductsGrid(_showOnlyFavorites),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : ProductsGrid(_showOnlyFavorites),
       drawer: AppDrawer(),
     ));
   }

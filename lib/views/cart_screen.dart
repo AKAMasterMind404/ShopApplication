@@ -41,14 +41,17 @@ class CartScreen extends StatelessWidget {
                   Spacer(),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(primary: Colors.white),
-                    onPressed: () {
-                      Provider.of<Orders>(context, listen: false)
-                          .addOrder(c.cartItems.values.toList(), c.sumTotal);
-                      c.clearCart();
-                    },
+                    onPressed: c.sumTotal <= 0
+                        ? null
+                        : () {
+                            Provider.of<Orders>(context, listen: false)
+                                .addOrder(
+                                    c.cartItems.values.toList(), c.sumTotal);
+                            c.clearCart();
+                          },
                     child: Text(
                       "ORDER NOW",
-                      style: TextStyle(color: Colors.purpleAccent),
+                      style: TextStyle(color: c.sumTotal <= 0?Colors.grey:Colors.purpleAccent),
                     ),
                   )
                 ],

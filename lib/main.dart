@@ -10,6 +10,12 @@ import 'package:state_management/views/product_detail.dart';
 import 'package:provider/provider.dart';
 import 'package:state_management/views/user_products.dart';
 
+const url = "cloud-projects-8ea6a-default-rtdb.firebaseio.com";
+const String httpsHeader = "https://";
+const String productsPath = "/products";
+const String ordersPath = "/orders";
+const String jsonExt = ".json";
+
 void main() => runApp(Builder(builder: (BuildContext context) {
       return MultiProvider(
         // Every widget that listens to this provider will receive
