@@ -1,7 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:state_management/models/product.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class Products_provider with ChangeNotifier {
   List<Product> _items = [
@@ -44,6 +44,8 @@ class Products_provider with ChangeNotifier {
     return [..._items];
   }
 
+  Future<void> fetchAndSetProducts() async {}
+
   List<Product> get favoriteItems {
     return _items.where((element) => element.isFavorite).toList();
   }
@@ -52,7 +54,20 @@ class Products_provider with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-  void addProduct(Product product) {
+  Future<void> addProduct(Product product) async {
+    const url = "https://cloud-projects-8ea6a-default-rtdb.firebaseio.com/";
+    var url2 = Uri.https(
+        "cloud-projects-8ea6a-default-rtdb.firebaseio.com", "/products.json");
+
+    print("This ran");
+    var response = await http.post(url2,
+        body: json.encode({
+          "title": product.title,
+          "description": product.description,
+          "imageUrl": product.imageUrl,
+          "price": product.price,
+          "isFavorite": product.isFavorite,
+        }));
     _items.add(Product(
         title: product.title,
         description: product.description,
@@ -61,6 +76,9 @@ class Products_provider with ChangeNotifier {
         id: DateTime.now().toString()));
 
     notifyListeners();
+    var unique_id = jsonDecode(response.body)["name"];
+
+    // Looks something like: {name: -McYzGK85hSpqrA0fDe5}, hence using ["name"]
   }
 
   void deleteProduct(String id) {
