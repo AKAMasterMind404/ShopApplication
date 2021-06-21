@@ -4,6 +4,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Products_provider with ChangeNotifier {
+  static const url = "cloud-projects-8ea6a-default-rtdb.firebaseio.com";
+  static const String httpsHeader = "https://";
+  static const String productPath = "/products.json";
+
   List<Product> _items = [
     Product(
       id: 'p1',
@@ -44,7 +48,20 @@ class Products_provider with ChangeNotifier {
     return [..._items];
   }
 
-  Future<void> fetchAndSetProducts() async {}
+  Future<void> fetchAndSetProducts() async {
+    try {
+      final response = await http.get(
+          Uri.parse(
+              httpsHeader+
+               url +
+               productPath)
+      );
+      Map<String, dynamic> data = json.decode(response.body) as Map<String, dynamic>;
+      print(data);
+    } catch (e) {
+      print("ERROR OCCURRED");
+    }
+  }
 
   List<Product> get favoriteItems {
     return _items.where((element) => element.isFavorite).toList();
@@ -55,9 +72,7 @@ class Products_provider with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    const url = "https://cloud-projects-8ea6a-default-rtdb.firebaseio.com/";
-    var url2 = Uri.https(
-        "cloud-projects-8ea6a-default-rtdb.firebaseio.com", "/products.json");
+    var url2 = Uri.https(url, "/products.json");
 
     print("This ran");
     var response = await http.post(url2,
