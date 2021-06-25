@@ -20,7 +20,7 @@ class Auth with ChangeNotifier {
           'returnSecureToken': true,
         },
       ),
-    );
+    ); 
     print(response.body);
   }
 }
