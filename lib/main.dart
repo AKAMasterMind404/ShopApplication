@@ -24,27 +24,34 @@ void main() => runApp(Builder(builder: (BuildContext context) {
         // an object of the Products_provider class
         providers: [
           ChangeNotifierProvider(create: (context) => Auth()),
-          ChangeNotifierProvider(create: (context) => Products_provider()),
-          ChangeNotifierProvider(create: (context) => Cart()),
-          ChangeNotifierProvider(create: (context) => Orders()),
-        ],
-        child: MaterialApp(
-          theme: ThemeData(
-            primarySwatch: Colors.purple,
-            accentColor: Colors.deepOrange,
-            fontFamily: 'Lato',
+          ChangeNotifierProxyProvider<Auth, Products_provider>(
+            create: (c)=>Products_provider(null,[],null),
+            update: (c,a,prev)=>Products_provider(a.token, prev == null ? [] : prev.items, a.userId)
           ),
-          debugShowCheckedModeBanner: false,
-          initialRoute: '/',
-          routes: {
-            '/': (context) => AuthScreen(),
-            'authScreen': (context) => AuthScreen(),
-            'productDetail': (context) => ProductDetail(),
-            'cartScreen': (context) => CartScreen(),
-            'orders': (context) => OrdersScreen(),
-            'userProducts': (context) => UserProductsScreen(),
-            'edit_product': (context) => EditProductScreen(),
-          },
-        ),
+          ChangeNotifierProvider(create: (context) => Cart()),
+          ChangeNotifierProxyProvider<Auth, Orders>(
+              create: (c)=>Orders(null,[]),
+              update: (c,a,prev)=>Orders(a.token, prev == null ? [] : prev.orders)
+          ),
+        ],
+        child: Consumer<Auth>(
+            builder: (c, a, _) => MaterialApp(
+                  theme: ThemeData(
+                    primarySwatch: Colors.purple,
+                    accentColor: Colors.deepOrange,
+                    fontFamily: 'Lato',
+                  ),
+                  debugShowCheckedModeBanner: false,
+                  initialRoute: '/',
+                  routes: {
+                    '/': (context) => a.isAuth ? home() : AuthScreen(),
+                    'authScreen': (context) => AuthScreen(),
+                    'productDetail': (context) => ProductDetail(),
+                    'cartScreen': (context) => CartScreen(),
+                    'orders': (context) => OrdersScreen(),
+                    'userProducts': (context) => UserProductsScreen(),
+                    'edit_product': (context) => EditProductScreen(),
+                  },
+                )),
       );
     }));

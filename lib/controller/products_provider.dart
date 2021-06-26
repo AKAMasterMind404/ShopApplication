@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:state_management/models/product.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -45,6 +46,10 @@ class Products_provider with ChangeNotifier {
     //   'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
     // ),
   ];
+  final String token;
+  final String userId;
+
+  Products_provider(this.token, this._items,this.userId);
 
   // to return a copy of private list _items
   List<Product> get items {
@@ -62,10 +67,18 @@ class Products_provider with ChangeNotifier {
   /// GETTER
   Future<void> fetchAndSetProducts() async {
     try {
-      final response =
-          await http.get(Uri.parse(httpsHeader + url + productsPath + jsonExt));
+      final response = await http.get(Uri.parse(
+          httpsHeader + url + productsPath + jsonExt + "?auth=" + token));
       Map<String, dynamic> data =
           json.decode(response.body) as Map<String, dynamic>;
+
+      if(data==null){return;}
+      final favResponse = Uri.parse(httpsHeader +
+          url +
+          "userFavorites/"+
+          "$userId/"+
+          jsonExt +
+          "?auth=$token");
       data.forEach((key, value) {
         if (!isLoaded.containsKey(key)) {
           isLoaded[key] = 1;
@@ -105,50 +118,24 @@ class Products_provider with ChangeNotifier {
           imageUrl: product.imageUrl,
           price: product.price,
           id: DateTime.now().toString()));
-          notifyListeners();
+      notifyListeners();
     }
     // var unique_id = jsonDecode(response.body)["name"];
 
     // Looks something like: {name: -McYzGK85hSpqrA0fDe5}, hence using ["name"]
   }
 
-  // Future<void> addProduct(Product product) async {
-  //   var url2 = Uri.parse(httpsHeader + url + productsPath + jsonExt);
-  //
-  //   if (isLoaded.containsKey(product.id)) {
-  //     var response = await http.post(url2,
-  //         body: json.encode({
-  //           "title": product.title,
-  //           "description": product.description,
-  //           "imageUrl": product.imageUrl,
-  //           "price": product.price,
-  //           "isFavorite": product.isFavorite,
-  //         }));
-  //
-  //     _items.add(Product(
-  //         title: product.title,
-  //         description: product.description,
-  //         imageUrl: product.imageUrl,
-  //         price: product.price,
-  //         id: DateTime.now().toString()));
-  //
-  //     var unique_id = jsonDecode(response.body)["name"];
-  //   } else {
-  //     print(isLoaded);
-  //     print("Product has finished loading!");
-  //   }
-  //
-  //   notifyListeners();
-  //
-  //   // Looks something like: {name: -McYzGK85hSpqrA0fDe5}, hence using ["name"]
-  // }
-
   Future<void> deleteProduct(String id) async {
     try {
       // print(httpsHeader + url + productsPath + "/$id" + jsonExt);
       // print(id);
-      await http.delete(
-          Uri.parse(httpsHeader + url + productsPath + "/$id" + jsonExt));
+      await http.delete(Uri.parse(httpsHeader +
+          url +
+          productsPath +
+          "/$id" +
+          jsonExt +
+          "?auth=" +
+          token));
       _items.removeWhere((element) => element.id == id);
       isLoaded.remove(id);
       notifyListeners();

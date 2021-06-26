@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:state_management/controller/auth.dart';
 import '../controller/cart.dart';
 import 'product.dart';
 
 class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final p = Provider.of<Product>(context);
-    final c = Provider.of<Cart>(context);
+    final p = Provider.of<Product>(context,listen: false);
+    final c = Provider.of<Cart>(context,listen: false);
+    final a = Provider.of<Auth>(context,listen: false);
 
     String id = p.id;
     String title = p.title;
@@ -31,7 +33,7 @@ class ProductItem extends StatelessWidget {
           title: Text(title, textAlign: TextAlign.center),
           leading: IconButton(
             onPressed: () {
-              p.toggleFavoriteStatus();
+              p.toggleFavoriteStatus(a.token, a.userId);
             },
             icon: Icon(
                 isFav ? Icons.favorite_rounded : Icons.favorite_border_rounded,
